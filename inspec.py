@@ -41,8 +41,11 @@ class Beanstalkd(AgentCheck):
         # Attempt to load the tags from the instance config.
         tags = instance.get('tags', [])
 
-        sp = subprocess.Popen((execute, 'exec', instance['profile_path'], '--attrs', instance['attributes_file'] if 'attributes_file' in instance else '', '--reporter', 'json-min'),
-                              stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        sp = subprocess.Popen(
+                (execute, 'exec', instance['profile_path'], '--attrs',
+                 instance['attributes_file'] if 'attributes_file' in instance else '',
+                 '--reporter', 'json-min'),
+                stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = sp.communicate()
         if err:
             raise Exception(u'Could not execute inspec checks: %s' % err)
@@ -70,6 +73,7 @@ if __name__ == '__main__':
     # Load the check and instance configurations
     check, instances = Beanstalkd.from_yaml('/etc/sd-agent/conf.d/inspec.yaml')
     for instance in instances:
-        print "\nRunning the check against profile_path {} and attributes_file {}".format(instance['profile_path'], instance['attributes_file'])
+        print "\nRunning the check against profile_path {} and attributes_file {}".format(
+                instance['profile_path'], instance['attributes_file'])
         check.check(instance)
         print 'Metrics: {}'.format(check.get_metrics())
