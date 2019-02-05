@@ -29,7 +29,7 @@ Tested with sd-agent v2.2.1.
 6. Submit a Pull Request using Github
 
 ## License & Authors
-* Author:: Andrei Skopenko (@scopenco)
+* Author:: Andrei Skopenko [@scopenco](https://github.com/scopenco)
 
 ```text
 Licensed under the Apache License, Version 2.0 (the "License");
