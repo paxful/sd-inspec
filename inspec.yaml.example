@@ -1,0 +1,6 @@
+init_config:
+  min_collection_interval: 60
+
+instances:
+  - profile_path: /etc/sd-agent/inspec-profile
+    attributes_file: /etc/sd-agent/plugins.conf.d/inspec_attrs.yml
