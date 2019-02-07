@@ -4,3 +4,6 @@ init_config:
 instances:
   - profile_path: /etc/sd-agent/inspec-profile
     attributes_file: /etc/sd-agent/plugins.conf.d/inspec_attrs.yml
+    controls:
+      - ssh
+      - postfix
