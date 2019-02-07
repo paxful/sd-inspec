@@ -15,9 +15,9 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 import sys
+import yaml
 import subprocess
 import os
-import yaml
 
 sys.path.append('/usr/share/python/sd-agent')
 from checks import AgentCheck
@@ -41,11 +41,15 @@ class Beanstalkd(AgentCheck):
         # Attempt to load the tags from the instance config.
         tags = instance.get('tags', [])
 
-        sp = subprocess.Popen(
-                (execute, 'exec', instance['profile_path'], '--attrs',
-                 instance['attributes_file'] if 'attributes_file' in instance else '',
-                 '--reporter', 'json-min'),
-                stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = [execute, 'exec', instance['profile_path']]
+        if 'attributes_file' in instance:
+            cmd.extend(['--attrs', instance['attributes_file']])
+        if 'controls' in instance:
+            cmd.append('--controls')
+            cmd.extend(instance['controls'])
+        cmd.extend(['--reporter', 'json-min'])
+
+        sp = subprocess.Popen(cmd, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = sp.communicate()
         if err:
             raise Exception(u'Could not execute inspec checks: %s' % err)
@@ -74,6 +78,6 @@ if __name__ == '__main__':
     check, instances = Beanstalkd.from_yaml('/etc/sd-agent/conf.d/inspec.yaml')
     for instance in instances:
         print "\nRunning the check against profile_path {} and attributes_file {}".format(
-                instance['profile_path'], instance['attributes_file'])
+            instance['profile_path'], instance['attributes_file'])
         check.check(instance)
         print 'Metrics: {}'.format(check.get_metrics())

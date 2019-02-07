@@ -3,7 +3,7 @@
 ## Overview
 
 [InSpec](https://www.inspec.io/) plugin for [ServerDensity](http://serverdensity.io).   
-Tested with sd-agent v2.2.1.
+Tested with sd-agent v2.2.4.
 
 ## Installation
 
