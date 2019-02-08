@@ -2,8 +2,8 @@
 
 ## Overview
 
-[InSpec](https://www.inspec.io/) plugin for [ServerDensity](http://serverdensity.io).   
-Tested with sd-agent v2.2.4.
+[InSpec](https://www.inspec.io/) plugin for [ServerDensity](http://serverdensity.io).
+Tested with [sd-agent](https://github.com/serverdensity/sd-agent) v2.2.4.
 
 ## Installation
 
@@ -11,6 +11,8 @@ Tested with sd-agent v2.2.4.
 * Copy the `inspec.py` script to `sd-agent` plugins folder `/usr/share/python/sd-agent/checks.d`
 * Copy configuration file `inspec.yaml.example` to `/etc/sd-agent/conf.d/inspec.yaml`.
 * Restart `sd-agent`
+
+You can set custom path to InSpec using `inspec_path` option in `init_config` section.
 
 ## Metrics
 
@@ -20,7 +22,10 @@ Tested with sd-agent v2.2.4.
 
 * `passed` is the number of passed inspec tests.
 
+You can check them with `sudo -iu sd-agent /usr/share/python/sd-agent/agent.py check inspec`
+
 ## Contributing
+
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
 3. Write your change
@@ -29,6 +34,7 @@ Tested with sd-agent v2.2.4.
 6. Submit a Pull Request using Github
 
 ## License & Authors
+
 * Author:: Andrei Skopenko [@scopenco](https://github.com/scopenco)
 
 ```text

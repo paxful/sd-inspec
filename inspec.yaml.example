@@ -1,6 +1,9 @@
+init_config:
+  min_collection_interval: 60
+  inspec_path: /opt/chef/embedded/bin/inspec
+
 instances:
   - profile_path: /etc/sd-agent/inspec-profile
-    inspec_path: /opt/chef/embedded/bin/inspec
     attributes_file: /etc/sd-agent/plugins.conf.d/inspec_attrs.yml
     controls:
       - ssh
