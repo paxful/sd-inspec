@@ -23,14 +23,14 @@ sys.path.append("/usr/share/python/sd-agent")
 from checks import AgentCheck
 
 
-class Beanstalkd(AgentCheck):
-    """Tracks beanstalkd metrics
+class InSpec(AgentCheck):
+    """Tracks InSpec exec metrics
     """
 
     def check(self, instance):
 
         # check inspec binary
-        execute = instance.get("inspec_path", "/usr/bin/inspec")
+        execute = self.init_config.get("inspec_path", "/usr/bin/inspec")
         if not os.access(execute, os.X_OK):
             raise Exception(u"InSpec binary not found")
 
@@ -80,7 +80,7 @@ class Beanstalkd(AgentCheck):
 
 if __name__ == "__main__":
     # Load the check and instance configurations
-    check, instances = Beanstalkd.from_yaml("/etc/sd-agent/conf.d/inspec.yaml")
+    check, instances = InSpec.from_yaml("/etc/sd-agent/conf.d/inspec.yaml")
     for instance in instances:
         print "\nRunning the check against profile_path {} and attributes_file {}".format(
             instance["profile_path"], instance["attributes_file"]
