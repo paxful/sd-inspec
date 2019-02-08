@@ -30,7 +30,7 @@ class Beanstalkd(AgentCheck):
     def check(self, instance):
 
         # check inspec binary
-        execute = "/usr/bin/inspec"
+        execute = instance.get("inspec_path", "/usr/bin/inspec")
         if not os.access(execute, os.X_OK):
             raise Exception(u"InSpec binary not found")
 
