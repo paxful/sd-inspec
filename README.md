@@ -22,7 +22,10 @@ You can set custom path to InSpec using `inspec_path` option in `init_config` se
 
 * `passed` is the number of passed inspec tests.
 
-You can check them with `sudo -iu sd-agent /usr/share/python/sd-agent/agent.py check inspec`
+## Usage
+
+* `sudo -iu sd-agent /usr/share/python/sd-agent/agent.py check inspec` - run sd-agent check.
+* `/usr/share/python/sd-agent/checks.d/inspec.py -d` - print inspec plugin results.
 
 ## Contributing
 

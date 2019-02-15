@@ -18,7 +18,8 @@ import sys
 import yaml
 import subprocess
 import os
-
+import pprint
+from optparse import OptionParser
 sys.path.append("/usr/share/python/sd-agent")
 from checks import AgentCheck
 
@@ -56,11 +57,11 @@ class InSpec(AgentCheck):
         if err:
             raise Exception(u"Could not execute inspec checks: %s" % err)
 
-        stats = yaml.load(out)
-        self.log.debug(u"InSpec raw data: {0}".format(stats))
+        self.stats = yaml.load(out)
+        self.log.debug(u"InSpec raw data: {0}".format(self.stats))
 
         metrics = {"passed": 0, "failed": 0, "total": 0}
-        for ctrl in stats["controls"]:
+        for ctrl in self.stats["controls"]:
             metrics["total"] += 1
             if ctrl["status"] == "passed":
                 metrics["passed"] += 1
@@ -77,13 +78,24 @@ class InSpec(AgentCheck):
 
         self.log.debug(u"InSpec metrics: {0}".format(metrics))
 
+    def get_raw_metrics(self):
+        return self.stats
 
 if __name__ == "__main__":
+
+    parser = OptionParser()
+    parser.add_option('-d', '--debug', action='store_true', default=False,
+                      dest='debug', help='Debug mode')
+    options, args = parser.parse_args()
+
     # Load the check and instance configurations
     check, instances = InSpec.from_yaml("/etc/sd-agent/conf.d/inspec.yaml")
     for instance in instances:
-        print "\nRunning the check against profile_path {} and attributes_file {}".format(
-            instance["profile_path"], instance["attributes_file"]
+        print "\nRunning the check against profile_path {}".format(
+            instance["profile_path"]
         )
         check.check(instance)
         print "Metrics: {}".format(check.get_metrics())
+        if options.debug:
+            pp = pprint.PrettyPrinter(indent=4)
+            pp.pprint(check.get_raw_metrics())
