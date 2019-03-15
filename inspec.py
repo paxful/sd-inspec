@@ -20,6 +20,7 @@ import subprocess
 import os
 import pprint
 from optparse import OptionParser
+
 sys.path.append("/usr/share/python/sd-agent")
 from checks import AgentCheck
 
@@ -51,7 +52,11 @@ class InSpec(AgentCheck):
         cmd.extend(["--reporter", "json-min"])
 
         sp = subprocess.Popen(
-            cmd, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            cmd,
+            stdin=None,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env={"HOME": "/tmp"},
         )
         out, err = sp.communicate()
         if err:
@@ -81,11 +86,18 @@ class InSpec(AgentCheck):
     def get_raw_metrics(self):
         return self.stats
 
+
 if __name__ == "__main__":
 
     parser = OptionParser()
-    parser.add_option('-d', '--debug', action='store_true', default=False,
-                      dest='debug', help='Debug mode')
+    parser.add_option(
+        "-d",
+        "--debug",
+        action="store_true",
+        default=False,
+        dest="debug",
+        help="Debug mode",
+    )
     options, args = parser.parse_args()
 
     # Load the check and instance configurations
